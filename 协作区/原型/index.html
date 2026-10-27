@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; form-action 'none'; base-uri 'none'">
+<title>EatWhat · 两页交互原型</title><style>body{margin:0;background:#f7f8f9}button,select,textarea{touch-action:manipulation}</style></head><body>
+<div id="eatwhat-a-flow">
+  <header class="ew-review-title"><strong>EatWhat · 交互原型</strong><span>灰度框架稿 · 2026.10.18</span></header>
+  <div class="ew-layout">
+    <section class="ew-phone" aria-label="EatWhat 手机网页原型">
+      <header class="ew-header"><strong>EatWhat</strong><button type="button" data-action="new" class="ew-text">开始新一餐</button></header>
+      <main class="ew-content" tabindex="-1"></main>
+      <div class="ew-composer"></div>
+      <nav class="ew-nav" aria-label="主要页面"><button type="button" data-action="home">首页</button><button type="button" data-action="mine">我的</button></nav>
+    </section>
+    <aside class="ew-review" aria-label="原型评审说明">
+      <details open><summary>原型说明与评审路径</summary>
+        <p>本轮看两页结构、推荐比较、偏好纠错。餐厅、价格、距离和位置均为示例，示意地图没有地理含义；未连接真实地图、AI 或账号。操作仅在当前页面保留，刷新会重置。</p>
+        <div class="ew-scenarios">
+          <button type="button" data-action="scene-first">首次选餐<span>输入 → 补地点 → 比较 → 选定</span></button>
+          <button type="button" data-action="scene-feedback">当次反馈<span>排除一类 → 换推荐 → 开始新一餐</span></button>
+          <button type="button" data-action="scene-memory">偏好纠错<span>载入已有偏好 → 编辑或删除 → 更新推荐</span></button>
+        </div>
+        <p class="ew-small">这里切换路径会重置全部样例。“开始新一餐”则保留长期偏好和默认值。</p>
+        <h2>同学接下来做什么</h2>
+        <dl><dt>A · 异步统筹与整合</dt><dd>提供共同规则和样例，分批整合；准备试用任务，成员分时观察或阅读记录。</dd><dt>B · 输入与补问</dt><dd>引导、缺失信息、定位失败、条件编辑。</dd><dt>C · 推荐与选定</dt><dd>地图联动、候选不足、字段未知、外部导航。</dd><dt>D · 反馈与个人页</dt><dd>八标签、长期保存时机、纠错与保存失败。</dd><dt>E · 整体交互与视觉</dt><dd>由五名产品成员中的设计专业同学主责：配色、字体层级、控件与状态规范、两页关键画面。当前灰度不代表最终风格。</dd></dl>
+        <p class="ew-small">每个模块仍需负责人补需求、关键分支及验收例子。本稿不代表团队评审、真实用户试用或开发验收已经完成。</p>
+      </details>
+    </aside>
+  </div>
+</div>
+<style>
+#eatwhat-a-flow { color-scheme:light; --ew-paper:#fff; --ew-ink:#25292c; --ew-muted:#62696e; --ew-line:#dce0e2; --ew-soft:#f2f4f5; --ew-strong:#30383d; --ew-on-strong:#fff; --ew-focus:#535e65; --ew-map:#eceff0; font:15px/1.6 system-ui,"Microsoft YaHei",sans-serif; color:var(--ew-ink); max-width:850px; margin:auto; padding:24px 16px; }
+#eatwhat-a-flow * { box-sizing:border-box; }
+#eatwhat-a-flow ::selection { background:var(--ew-strong); color:var(--ew-on-strong); }
+#eatwhat-a-flow .ew-review-title { display:flex; justify-content:space-between; gap:8px; margin-bottom:14px; font-size:14px; }
+#eatwhat-a-flow .ew-review-title span { color:var(--ew-muted); font-size:12px; }
+#eatwhat-a-flow .ew-layout { display:grid; grid-template-columns:minmax(0,430px) minmax(0,1fr); align-items:start; gap:32px; }
+#eatwhat-a-flow .ew-phone { height:840px; max-height:calc(100svh - 100px); min-height:520px; background:var(--ew-paper); border:1px solid var(--ew-line); border-radius:16px; display:flex; flex-direction:column; overflow:hidden; }
+#eatwhat-a-flow .ew-header { padding:8px 16px; display:flex; justify-content:space-between; align-items:center; gap:8px; border-bottom:1px solid var(--ew-line); }
+#eatwhat-a-flow .ew-header strong { font-size:20px; letter-spacing:-.02em; }
+#eatwhat-a-flow .ew-content { flex:1; min-height:0; overflow:auto; padding:18px 16px; scrollbar-width:thin; scrollbar-color:var(--ew-line) var(--ew-paper); }
+#eatwhat-a-flow .ew-content:focus { outline:none; }
+#eatwhat-a-flow h1 { margin:0 0 8px; font-size:25px; font-weight:650; line-height:1.35; text-wrap:balance; letter-spacing:-.02em; }
+#eatwhat-a-flow h2 { margin:22px 0 8px; font-size:17px; font-weight:650; line-height:1.4; }
+#eatwhat-a-flow h3 { margin:0; font-size:17px; line-height:1.45; }
+#eatwhat-a-flow p { margin:8px 0 14px; }
+#eatwhat-a-flow .ew-muted,#eatwhat-a-flow .ew-small { color:var(--ew-muted); }
+#eatwhat-a-flow .ew-small { font-size:12px; }
+#eatwhat-a-flow button,#eatwhat-a-flow select,#eatwhat-a-flow textarea,#eatwhat-a-flow input { font:inherit; color:inherit; caret-color:var(--ew-strong); }
+#eatwhat-a-flow button { min-height:44px; border:1px solid var(--ew-line); border-radius:8px; background:var(--ew-paper); padding:9px 12px; cursor:pointer; line-height:1.45; }
+#eatwhat-a-flow button:active { background:var(--ew-line); }
+#eatwhat-a-flow button:disabled { opacity:.55; cursor:default; }
+#eatwhat-a-flow :focus-visible { outline:2px solid var(--ew-focus); outline-offset:3px; }
+#eatwhat-a-flow .ew-primary { background:var(--ew-strong); color:var(--ew-on-strong); border-color:var(--ew-strong); }
+#eatwhat-a-flow .ew-full { display:block; width:100%; margin-top:12px; }
+#eatwhat-a-flow .ew-text { border:0; background:transparent; font-size:13px; padding:8px; }
+#eatwhat-a-flow .ew-fields { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+#eatwhat-a-flow label { display:block; font-size:13px; }
+#eatwhat-a-flow select,#eatwhat-a-flow textarea { display:block; width:100%; border:1px solid var(--ew-line); border-radius:8px; background:var(--ew-paper); padding:10px; margin-top:6px; min-height:44px; font-size:16px; }
+#eatwhat-a-flow textarea { resize:vertical; min-height:94px; }
+#eatwhat-a-flow textarea::placeholder { color:var(--ew-muted); }
+#eatwhat-a-flow .ew-example { text-align:left; width:100%; background:var(--ew-soft); font-size:13px; margin-top:10px; }
+#eatwhat-a-flow .ew-error { font-size:13px; font-weight:600; margin:6px 0; }
+#eatwhat-a-flow .ew-notice { padding:12px; background:var(--ew-soft); border-radius:8px; margin:12px 0; font-size:13px; }
+#eatwhat-a-flow .ew-notice h2 { margin-top:0; }
+#eatwhat-a-flow .ew-condition { font-size:13px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding-bottom:10px; border-bottom:1px solid var(--ew-line); }
+#eatwhat-a-flow .ew-condition p { margin:0; }
+#eatwhat-a-flow .ew-editor { background:var(--ew-soft); padding:14px; border-radius:12px; margin:14px 0; }
+#eatwhat-a-flow .ew-editor h2 { margin-top:0; }
+#eatwhat-a-flow fieldset { border:0; padding:0; margin:14px 0; min-width:0; }
+#eatwhat-a-flow legend { font-size:13px; }
+#eatwhat-a-flow .ew-checks { display:grid; grid-template-columns:1fr 1fr; gap:2px 8px; }
+#eatwhat-a-flow .ew-checks label { display:flex; align-items:center; gap:8px; min-height:44px; }
+#eatwhat-a-flow .ew-checks input { accent-color:var(--ew-strong); width:18px; height:18px; }
+#eatwhat-a-flow .ew-actions { display:flex; gap:8px; flex-wrap:wrap; }
+#eatwhat-a-flow .ew-actions button { flex:1 1 100px; font-size:13px; }
+#eatwhat-a-flow .ew-map { position:relative; height:100px; background:var(--ew-map); border-radius:12px; margin:6px 0 4px; overflow:hidden; }
+#eatwhat-a-flow .ew-map svg { position:absolute; inset:0; width:100%; height:100%; }
+#eatwhat-a-flow .ew-map-road { stroke:var(--ew-paper); stroke-width:15; fill:none; }
+#eatwhat-a-flow .ew-pin { position:absolute; width:44px; height:44px; padding:0; border:1px solid var(--ew-muted); background:var(--ew-paper); color:var(--ew-ink); border-radius:50%; font-weight:700; }
+#eatwhat-a-flow .ew-pin[aria-pressed="true"] { background:var(--ew-strong); color:var(--ew-on-strong); border-color:var(--ew-strong); }
+#eatwhat-a-flow .ew-map-label { position:absolute; bottom:6px; left:8px; font-size:11px; background:var(--ew-paper); padding:2px 5px; border-radius:4px; }
+#eatwhat-a-flow .ew-origin { position:absolute; bottom:6px; right:8px; font-size:11px; background:var(--ew-paper); padding:1px 4px; border-radius:4px; }
+#eatwhat-a-flow .ew-section-title { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:10px; }
+#eatwhat-a-flow .ew-section-title h2 { margin:0; }
+#eatwhat-a-flow .ew-card { padding:13px 0; border-bottom:1px solid var(--ew-line); scroll-margin-top:8px; }
+#eatwhat-a-flow .ew-card.is-expanded { padding:14px; border:1px solid var(--ew-strong); border-radius:12px; margin:8px 0; }
+#eatwhat-a-flow .ew-card-heading { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; }
+#eatwhat-a-flow .ew-number { font-size:13px; font-weight:700; }
+#eatwhat-a-flow .ew-role { margin-left:auto; font-size:12px; font-weight:600; }
+#eatwhat-a-flow .ew-facts { display:flex; gap:6px 14px; flex-wrap:wrap; font-size:13px; color:var(--ew-muted); margin:5px 0; font-variant-numeric:tabular-nums; }
+#eatwhat-a-flow .ew-reason { margin:5px 0 7px; font-size:13px; }
+#eatwhat-a-flow .ew-tags { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 10px; }
+#eatwhat-a-flow .ew-tags span { background:var(--ew-soft); padding:2px 7px; border-radius:4px; font-size:11px; }
+#eatwhat-a-flow .ew-card .ew-expand { width:100%; text-align:left; padding:2px 0; border:0; font-size:12px; color:var(--ew-muted); }
+#eatwhat-a-flow .ew-card .ew-actions button { flex-basis:80px; padding:9px 8px; }
+#eatwhat-a-flow .ew-message { background:var(--ew-soft); border-radius:8px; padding:10px 12px; font-size:13px; margin:9px 0; }
+#eatwhat-a-flow .ew-message.user { margin-left:24px; border:1px solid var(--ew-line); background:var(--ew-paper); }
+#eatwhat-a-flow .ew-chat-examples { display:flex; gap:6px; flex-wrap:wrap; margin-top:18px; }
+#eatwhat-a-flow .ew-chat-examples button { font-size:12px; padding:8px; }
+#eatwhat-a-flow .ew-composer:empty { display:none; }
+#eatwhat-a-flow .ew-composer { padding:8px 12px; border-top:1px solid var(--ew-line); background:var(--ew-paper); }
+#eatwhat-a-flow .ew-compose-toggle { width:100%; text-align:left; color:var(--ew-muted); font-size:13px; }
+#eatwhat-a-flow .ew-compose-form { display:flex; gap:8px; align-items:end; }
+#eatwhat-a-flow .ew-compose-form label { flex:1; min-width:0; }
+#eatwhat-a-flow .ew-compose-form textarea { min-height:58px; height:58px; margin:0; }
+#eatwhat-a-flow .ew-nav { display:flex; background:var(--ew-paper); border-top:1px solid var(--ew-line); padding:4px 12px; gap:8px; }
+#eatwhat-a-flow .ew-nav button { flex:1; border:0; color:var(--ew-muted); background:transparent; }
+#eatwhat-a-flow .ew-nav button[aria-current="page"] { color:var(--ew-ink); background:var(--ew-soft); font-weight:650; }
+#eatwhat-a-flow .ew-memory { padding:14px 0; border-bottom:1px solid var(--ew-line); }
+#eatwhat-a-flow .ew-memory p { font-size:13px; margin:5px 0; }
+#eatwhat-a-flow .ew-review { font-size:13px; color:var(--ew-muted); }
+#eatwhat-a-flow .ew-review summary { color:var(--ew-ink); font-weight:650; cursor:pointer; min-height:44px; }
+#eatwhat-a-flow .ew-review h2 { color:var(--ew-ink); font-size:15px; margin-top:24px; }
+#eatwhat-a-flow .ew-review dt { color:var(--ew-ink); font-weight:650; margin-top:13px; }
+#eatwhat-a-flow .ew-review dd { margin:3px 0 0; }
+#eatwhat-a-flow .ew-scenarios { display:grid; gap:8px; }
+#eatwhat-a-flow .ew-scenarios button { text-align:left; font-size:13px; }
+#eatwhat-a-flow .ew-scenarios span { display:block; font-size:11px; color:var(--ew-muted); margin-top:3px; }
+@media(hover:hover) { #eatwhat-a-flow button:hover { background:var(--ew-soft); } #eatwhat-a-flow .ew-primary:hover { background:var(--ew-ink); } }
+@media(max-width:760px) {
+  #eatwhat-a-flow { padding:10px 8px 24px; }
+  #eatwhat-a-flow .ew-review-title { display:block; margin:0 6px 8px; }
+  #eatwhat-a-flow .ew-review-title span { display:block; }
+  #eatwhat-a-flow .ew-layout { display:flex; flex-direction:column; gap:24px; align-items:center; }
+  #eatwhat-a-flow .ew-phone { width:100%; max-width:430px; height:calc(100svh - 76px); max-height:none; min-height:440px; border-radius:12px; }
+  #eatwhat-a-flow .ew-review { max-width:430px; width:100%; padding:0 10px; }
+  #eatwhat-a-flow .ew-content { padding:16px 14px; }
+  #eatwhat-a-flow .ew-header { padding:6px 14px; }
+}
+</style>
+<script>
+(() => {
+  const root=document.getElementById('eatwhat-a-flow');
+  const content=root.querySelector('.ew-content');
+  const composer=root.querySelector('.ew-composer');
+  const example='一个人，30 元以内，今天不想吃面。';
+  const restaurants=[
+    {id:'a',name:'家常饭 A',type:'家常饭',price:24,distance:350,x:15,y:16},
+    {id:'b',name:'杂粮饭 B',type:'杂粮饭',price:28,distance:550,x:70,y:10},
+    {id:'c',name:'粥铺 C',type:'粥',price:18,distance:180,x:48,y:42},
+    {id:'d',name:'蒸饺店 D',type:'饺子',price:22,distance:400,x:22,y:40},
+    {id:'e',name:'面馆 E',type:'面食',price:20,distance:250,x:38,y:12},
+    {id:'f',name:'盖饭店 F',type:'盖饭',price:26,distance:500,x:70,y:42}
+  ];
+  const types=restaurants.map(r=>r.type);
+  const fresh=()=>({page:'home',phase:'start',draft:'',chatDraft:'',chatOpen:false,location:'',people:0,budget:0,defaultBudget:0,temp:[],prefs:[],history:[],shown:[],batch:0,selected:null,expanded:null,focused:null,mapOpen:true,stale:false,editor:false,editPref:null,prefDraft:'',deletePref:null,notice:'',error:'',scroll:{home:0,mine:0}});
+  let state=fresh();
+  const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const button=(action,label,cls='',attrs='')=>`<button type="button" data-action="${action}" class="${cls}" ${attrs}>${label}</button>`;
+  const options=(list,value)=>list.map(([v,label])=>`<option value="${esc(v)}" ${String(v)===String(value)?'selected':''}>${esc(label)}</option>`).join('');
+  const ready=()=>state.location&&state.people&&state.budget;
+  const addMessage=(role,text)=>state.history.push({role,text});
+  function markStale() { if(['results','picked'].includes(state.phase)){state.stale=true;state.selected=null;state.phase='results';} }
+  function generate() {
+    if(!ready()){state.phase='clarify';state.chatOpen=false;return;}
+    const banned=[...state.temp,...state.prefs.map(p=>p.type)];
+    const order=state.batch%2?['d','f','b','e','a','c']:['e','a','b','c','d','f'];
+    const pool=order.map(id=>restaurants.find(r=>r.id===id)).filter(r=>r.price<=state.budget&&!banned.includes(r.type));
+    const safe=pool[0],rest=pool.filter(r=>r!==safe);
+    const fallback=[...rest].sort((a,b)=>a.price-b.price||a.distance-b.distance)[0];
+    const explore=rest.find(r=>r!==fallback);
+    state.shown=[...(safe?[{...safe,role:'最稳妥'}]:[]),...(explore?[{...explore,role:'轻探索'}]:[]),...(fallback?[{...fallback,role:'低风险兜底'}]:[])];
+    state.phase='results';state.stale=false;state.selected=null;state.expanded=safe?.id||null;state.focused=null;state.editor=false;state.chatOpen=false;
+  }
+  function conditions() {
+    return `<div class="ew-condition"><div><p>${esc(state.location||'地点待补充')} · ${state.people?'一个人':'人数待补充'} · ${state.budget?state.budget+' 元以内':'预算待补充'}</p>${state.temp.length?`<p class="ew-small">仅本餐不吃：${esc(state.temp.join('、'))}</p>`:''}${state.prefs.length?`<p class="ew-small">已参考 ${state.prefs.length} 条长期偏好</p>`:''}</div>${button('edit-conditions','修改','ew-text')}</div>`;
+  }
+  function conditionEditor() {
+    return `<form data-form="conditions" class="ew-editor"><h2>这一餐的条件</h2><label>用餐地点（示例）<select name="location">${options([['','请选择地点'],['学校东门','学校东门']],state.location)}</select></label><div class="ew-fields"><label>用餐人数<select name="people">${options([[0,'请选择'],[1,'一个人']],state.people)}</select></label><label>每人预算（示例元）<select name="budget">${options([[0,'请选择'],[15,'15 元以内'],[20,'20 元以内'],[30,'30 元以内'],[40,'40 元以内']],state.budget)}</select></label></div><fieldset><legend>仅本餐不吃（可不选）</legend><div class="ew-checks">${types.map(t=>`<label><input type="checkbox" name="exclude" value="${t}" ${state.temp.includes(t)?'checked':''}>${t}</label>`).join('')}</div></fieldset><p class="ew-small">这里只修改当次条件，不会改变日常默认值或长期偏好。</p><div class="ew-actions"><button type="submit" class="ew-primary">应用条件</button>${button('cancel-conditions','取消')}</div></form>`;
+  }
+  function map() {
+    return `<div class="ew-section-title"><span class="ew-small">附近位置 · 示例</span>${button('toggle-map',state.mapOpen?'收起地图':'展开地图','ew-text',`aria-expanded="${state.mapOpen}"`)}</div>${state.mapOpen?`<div class="ew-map" aria-label="当前推荐的示意地图"><svg viewBox="0 0 360 154" preserveAspectRatio="none" aria-hidden="true"><path d="M0 97H360M151 0V154M0 35H360" class="ew-map-road"/></svg>${state.shown.map((r,i)=>button('pin',String(i+1),'ew-pin',`data-id="${r.id}" aria-label="查看${r.name}卡片" aria-pressed="${state.focused===r.id}" style="left:${r.x}%;top:${r.y}%"`)).join('')}<span class="ew-origin">学校东门</span><span class="ew-map-label">示意地图 · 非真实位置</span></div>`:''}`;
+  }
+  function card(r,i) {
+    const expanded=state.expanded===r.id;
+    const reason=r.role==='最稳妥'?`参考人均 ${r.price} 元，符合当前预算与排除条件。`:r.role==='轻探索'?`在预算内换一种选择：${r.type}。`:`这组中参考价格较低，为 ${r.price} 元。`;
+    return `<article id="ew-card-${r.id}" class="ew-card ${expanded?'is-expanded':''}" aria-label="${r.role} ${r.name}"><div class="ew-card-heading"><span class="ew-number">${i+1}</span><h3>${r.name}</h3><span class="ew-role">${r.role}</span></div><div class="ew-facts"><span>参考人均 ¥${r.price}</span><span>距离 ${r.distance} 米</span></div><p class="ew-reason">${reason}</p>${expanded?`<div class="ew-tags"><span>预算内</span><span>${r.type}</span></div><div class="ew-actions">${button('pick','就这家','ew-primary',`data-id="${r.id}"`)}${button('locate','查看位置','',`data-id="${r.id}"`)}${button('exclude','今天不吃这类','',`data-id="${r.id}" aria-label="今天不想吃${r.type}"`)}</div>`:button('expand','展开操作','ew-expand',`data-id="${r.id}" aria-expanded="false"`)}</article>`;
+  }
+  function chat() {
+    return `<section class="ew-chat"><div class="ew-section-title"><h2>说说想怎么调整</h2>${button('chat-close','返回推荐','ew-text')}</div><p class="ew-small">此原型仅理解下方三种调整表达。</p>${state.history.map(m=>`<p class="ew-message ${m.role==='user'?'user':''}">${esc(m.text)}</p>`).join('')}<div class="ew-chat-examples">${['预算改成20元','预算改成30元','今天不想吃面'].map(t=>button('chat-example',t,'',`data-value="${t}"`)).join('')}</div></section>`;
+  }
+  function personal() {
+    return `<h1>我的偏好</h1><p class="ew-muted">查看和纠正以后会用到的信息。</p><h2>日常默认值</h2><form data-form="defaults"><label>每人预算（示例元）<select name="defaultBudget">${options([[0,'尚未设置'],[20,'20 元以内'],[30,'30 元以内'],[40,'40 元以内']],state.defaultBudget)}</select></label><button type="submit" class="ew-full">保存默认预算</button></form><p class="ew-small">下一餐缺预算时使用；本餐明确输入优先。</p><h2>长期偏好与限制</h2><p class="ew-small">“今天不想吃”只在当餐使用，不会放入这里。</p>${state.notice?`<div class="ew-notice" role="status">${esc(state.notice)}</div>`:''}${state.prefs.length?state.prefs.map(p=>`<article class="ew-memory"><h3>不推荐${esc(p.type)}</h3><p>对象：${esc(p.type)} · 范围：长期</p><p class="ew-small">来源：${esc(p.source)}</p>${state.deletePref===p.id?`<div class="ew-notice"><p>删除后，后续推荐不再使用这条限制。其他偏好和当餐条件保留。</p><div class="ew-actions">${button('confirm-delete','确认删除','',`data-id="${p.id}"`)}${button('cancel-delete','取消')}</div></div>`:state.editPref===p.id?`<form data-form="preference" class="ew-editor"><label>以后不推荐的类别<select name="type">${options(types.map(t=>[t,t]),state.prefDraft)}</select></label><div class="ew-actions" style="margin-top:12px"><button type="submit" class="ew-primary">保存偏好</button>${button('cancel-pref','取消')}</div></form>`:`<div class="ew-actions">${button('edit-pref','编辑','',`data-id="${p.id}"`)}${button('delete-pref','删除','',`data-id="${p.id}"`)}</div>`}</article>`).join(''):`<div class="ew-notice"><p>还没有长期偏好，也可以正常选餐。</p>${button('home','去选一顿')}</div>`}`;
+  }
+  function home() {
+    if(state.phase==='start')return `<h1>这一顿，想怎么吃？</h1><p class="ew-muted">说说这餐的想法，再一起缩小选择。</p><form data-form="start"><label for="ew-request">这顿饭的需求</label><textarea id="ew-request" placeholder="在哪附近、几个人、预算多少？">${esc(state.draft)}</textarea>${button('example','填入示例：一个人，30 元以内，今天不想吃面。','ew-example')}<p class="ew-error" role="alert">${esc(state.error)}</p><button type="submit" class="ew-primary ew-full">帮我选一顿</button></form><h2>先选餐，偏好可以慢慢补</h2><p class="ew-small">不需要先填完整问卷。已有的长期偏好可以在“我的”里查看和纠正。</p>${state.defaultBudget?`<p class="ew-small">已确认的默认预算：${state.defaultBudget} 元以内；明确输入会优先使用。</p>`:''}${button('direct','直接填写当餐条件','ew-full')}`;
+    if(state.phase==='clarify')return `<h1>${!state.location?'想在哪附近吃？':'还差一点当次信息'}</h1><p class="ew-muted">只补齐缺少的地点、人数和预算。</p>${conditions()}${conditionEditor()}<p class="ew-error" role="alert">${esc(state.error)}</p>`;
+    let html=conditions();
+    if(state.editor)return html+conditionEditor()+`<p class="ew-error" role="alert">${esc(state.error)}</p>`;
+    if(state.stale)return html+`<div class="ew-notice"><h2>条件变了，更新一下推荐</h2><p>旧推荐暂时收起，避免按旧条件选餐。</p>${button('refresh','按新条件更新','ew-primary ew-full')}</div>`;
+    if(state.chatOpen)return html+chat();
+    if(state.phase==='picked'){
+      const r=restaurants.find(x=>x.id===state.selected);
+      return html+`<h1 style="margin-top:24px">这一顿，选好了</h1><article class="ew-card"><h3>${r.name}</h3><div class="ew-facts"><span>参考人均 ¥${r.price}</span><span>距离 ${r.distance} 米</span></div><p>已选定，还没有用餐后的反馈。</p></article>${button('back-results','再看看其他选择','ew-full')}${button('new','开始新一餐','ew-primary ew-full')}`;
+    }
+    if(state.notice)html+=`<div class="ew-notice" role="status">${esc(state.notice)}</div>`;
+    if(!state.shown.length)return html+`<h2>暂时没有符合条件的选择</h2><p class="ew-muted">可以修改预算或当次限制，已有条件不会自动放宽。</p>${button('edit-conditions','修改当餐条件','ew-primary ew-full')}`;
+    return html+map()+`<div class="ew-section-title"><h2>${state.shown.length===3?'先比较这三家':'符合条件的 '+state.shown.length+' 家'}</h2>${button('swap','换一组','ew-text')}</div>${state.shown.map(card).join('')}`;
+  }
+  function render({top=false,scroll=null}={}) {
+    const previous=content.scrollTop;
+    content.innerHTML=state.page==='mine'?personal():home();
+    root.querySelectorAll('.ew-nav button').forEach(b=>{if(b.dataset.action===state.page)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+    const showComposer=state.page==='home'&&['results','picked'].includes(state.phase)&&!state.stale&&!state.editor;
+    composer.innerHTML=!showComposer?'':state.chatOpen?`<form data-form="chat"><div class="ew-compose-form"><label><span class="ew-small">告诉我想怎么调整</span><textarea id="ew-chat-draft" placeholder="选择示例，或输入同一句">${esc(state.chatDraft)}</textarea></label><button type="submit" class="ew-primary">发送</button></div><p class="ew-error" role="alert">${esc(state.error)}</p></form>`:button('chat-open',state.chatDraft?'继续刚才的输入':'想调整？和我说说','ew-compose-toggle');
+    content.scrollTop=top?0:scroll===null?previous:scroll;
+  }
+  function resetMeal(){const{prefs,defaultBudget}=state;state={...fresh(),prefs,defaultBudget,budget:defaultBudget};}
+  root.addEventListener('input',e=>{if(e.target.id==='ew-request')state.draft=e.target.value;if(e.target.id==='ew-chat-draft')state.chatDraft=e.target.value;});
+  root.addEventListener('change',e=>{if(e.target.name==='type')state.prefDraft=e.target.value;});
+  root.addEventListener('submit',e=>{
+    if(!e.target.dataset.form)return;
+    e.preventDefault();state.error='';
+    if(e.target.dataset.form==='start'){
+      const text=state.draft.trim();
+      if(!text){state.error='先说说这顿饭想怎么吃。';render();return;}
+      if(![example,'一个人，30 元以内。','附近有什么好吃的？'].includes(text)){state.error='原型尚未接入 AI，请填入示例或直接填写当餐条件。';render();return;}
+      if(text!== '附近有什么好吃的？'){state.people=1;state.budget=30;state.temp=text===example?['面食']:[];}
+      addMessage('user',text);addMessage('assistant','还需要一个用餐地点。');state.phase='clarify';render({top:true});
+    }else if(e.target.dataset.form==='conditions'){
+      const f=new FormData(e.target);state.location=f.get('location');state.people=Number(f.get('people'));state.budget=Number(f.get('budget'));state.temp=f.getAll('exclude');
+      if(!ready()){state.error='请补齐地点、人数和预算。';state.phase='clarify';render();return;}
+      state.editor=false;state.notice='';addMessage('assistant',`当餐条件：${state.location}，一个人，${state.budget} 元以内。`);
+      if(state.phase==='clarify')generate();else markStale();render({top:true});
+    }else if(e.target.dataset.form==='defaults'){
+      state.defaultBudget=Number(new FormData(e.target).get('defaultBudget'));state.notice='默认预算已更新，将用于下一餐。';render();
+    }else if(e.target.dataset.form==='preference'){
+      const type=new FormData(e.target).get('type');
+      if(state.prefs.some(p=>p.type===type&&p.id!==state.editPref)){state.notice='已有这个类别的限制，请修改现有记录。';render();return;}
+      const pref=state.prefs.find(p=>p.id===state.editPref);pref.type=type;pref.source='你在个人页主动修改';state.editPref=null;state.notice='偏好已更新，回首页后重新获取推荐。';markStale();render();
+    }else if(e.target.dataset.form==='chat'){
+      const text=state.chatDraft.trim().replace(/[。.!！\s]/g,'');
+      if(!['预算改成20元','预算改成30元','今天不想吃面'].includes(text)){state.error='请使用上方三种示例表达；这版尚未接入 AI。';render();return;}
+      addMessage('user',state.chatDraft.trim());
+      if(text==='今天不想吃面')state.temp=[...new Set([...state.temp,'面食'])];else state.budget=text.includes('20')?20:30;
+      addMessage('assistant','按当餐调整更新；不会因此改变长期偏好。');state.chatDraft='';generate();state.notice='已按刚才的调整重新展示。';render({top:true});
+    }
+  });
+  root.addEventListener('click',e=>{
+    const el=e.target.closest('button[data-action]');if(!el||!root.contains(el))return;
+    const action=el.dataset.action;state.error='';let top=false;
+    if(action==='example')state.draft=example;
+    else if(action==='direct'){state.phase='clarify';top=true;}
+    else if(action==='home'||action==='mine'){
+      state.scroll[state.page]=content.scrollTop;state.page=action;state.notice='';render({scroll:state.scroll[action]});content.focus({preventScroll:true});return;
+    }else if(action==='edit-conditions'){state.editor=!state.editor;top=true;}
+    else if(action==='cancel-conditions'){state.editor=false;if(state.phase==='clarify')state.phase='start';top=true;}
+    else if(action==='refresh'){generate();state.notice='已使用更新后的条件与偏好。';top=true;}
+    else if(action==='toggle-map')state.mapOpen=!state.mapOpen;
+    else if(action==='expand'){state.expanded=el.dataset.id;state.focused=el.dataset.id;}
+    else if(action==='swap'){
+      const before=state.shown.map(r=>r.id).sort().join();state.batch++;generate();
+      state.notice=before===state.shown.map(r=>r.id).sort().join()?'当前条件下没有更多示例选择，保留这一组。':'换了一组，其他当餐条件保持不变。有限候选可能重复。';top=true;
+    }else if(action==='exclude'){
+      const r=restaurants.find(r=>r.id===el.dataset.id);state.temp=[...new Set([...state.temp,r.type])];addMessage('user','今天不想吃'+r.type);generate();state.notice=`本餐先不推荐${r.type}，不会写成长期偏好。`;top=true;
+    }else if(action==='pick'){state.selected=el.dataset.id;state.phase='picked';state.notice='';top=true;}
+    else if(action==='back-results'){state.phase='results';top=true;}
+    else if(action==='pin'||action==='locate'){
+      state.focused=el.dataset.id;state.expanded=el.dataset.id;state.mapOpen=true;render();
+      const target=action==='pin'?root.querySelector('#ew-card-'+state.focused):root.querySelector('.ew-map');
+      content.scrollTop+=target.getBoundingClientRect().top-content.getBoundingClientRect().top-8;
+      const focusTarget=action==='pin'?target.querySelector('button'):root.querySelector(`.ew-pin[data-id="${state.focused}"]`);focusTarget.focus({preventScroll:true});return;
+    }else if(action==='chat-open'){state.chatOpen=true;top=true;}
+    else if(action==='chat-close'){state.chatOpen=false;top=true;}
+    else if(action==='chat-example')state.chatDraft=el.dataset.value;
+    else if(action==='edit-pref'){state.editPref=el.dataset.id;state.deletePref=null;state.prefDraft=state.prefs.find(p=>p.id===state.editPref).type;}
+    else if(action==='cancel-pref')state.editPref=null;
+    else if(action==='delete-pref'){state.deletePref=el.dataset.id;state.editPref=null;}
+    else if(action==='cancel-delete')state.deletePref=null;
+    else if(action==='confirm-delete'){state.prefs=state.prefs.filter(p=>p.id!==el.dataset.id);state.deletePref=null;state.notice='这条偏好已删除，回首页后更新推荐。';markStale();}
+    else if(action==='new'){resetMeal();top=true;}
+    else if(action.startsWith('scene-')){
+      state=fresh();
+      if(action!=='scene-first'){
+        state.location='学校东门';state.people=1;state.budget=30;addMessage('user','一个人，30 元以内。');addMessage('assistant','按学校东门的示例地点展示。');
+        if(action==='scene-memory'){state.prefs=[{id:'p1',type:'面食',source:'场景预置：曾明确反馈“这类以后别推荐”'}];state.defaultBudget=30;state.page='mine';}
+        else state.temp=['面食'];generate();
+      }top=true;
+    }
+    render({top});
+    if(action.startsWith('scene-'))window.scrollTo({top:0});
+    if(action==='example')root.querySelector('#ew-request').focus();
+    if(action==='chat-open'||action==='chat-example')root.querySelector('#ew-chat-draft').focus();
+    if(action==='edit-pref'||action==='delete-pref')root.querySelector('.ew-editor, .ew-memory .ew-notice')?.scrollIntoView({block:'nearest'});
+  });
+  render();
+})();
+</script>
+
+</body></html>
