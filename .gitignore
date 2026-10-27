@@ -1,0 +1,24 @@
+# Local PDF exports and layout previews; Markdown remains the shared source.
+/output/pdf/
+/tmp/
+
+# Local Python cache and machine-specific files.
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# Local credentials, if introduced later.
+.env
+.env.*
+!.env.example
+
+# Earlier discussions and implementation plans remain local background.
+/chat.md
+/PRODUCT.md
+/ISSUES.md
+/PROJECT-BRIEF.md
+/PRODUCT-SPEC.md
+/TEAM-PLAN.md
+/团队资料/
+/协作区/工具/
